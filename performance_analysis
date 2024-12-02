@@ -1,0 +1,89 @@
+ 
+### **Performance Analysis  **
+
+#### **1. Overview of the Scheduling Algorithms**
+
+In this project, we implemented and compared three CPU scheduling approaches:
+
+1. **Round Robin (RR)**: A preemptive scheduling algorithm where each process is assigned a fixed time slice (quantum) in a cyclic order. It is well-suited for environments where fairness and responsiveness are essential.
+
+2. **Shortest Job First (SJF)**: A non-preemptive scheduling algorithm that selects the process with the shortest burst time for execution next. It minimizes waiting time and turnaround time but can suffer from starvation for long processes.
+
+3. **Hybrid RR + SJF**: A combination of the above two algorithms where Round Robin is used first to give each process an equal share of CPU time, and then Shortest Job First is applied to optimize the order of execution, prioritizing processes with shorter burst times.
+
+---
+
+#### **2. Performance Comparison**
+
+- **Round Robin (RR)**
+  - **Advantages**:
+    - Fair distribution of CPU time among processes.
+    - Ensures no process is left starving (i.e., each process gets executed periodically).
+  - **Disadvantages**:
+    - High waiting time for processes with long burst times.
+    - Inefficient in situations where some processes require much less CPU time than others.
+  
+- **Shortest Job First (SJF)**
+  - **Advantages**:
+    - Minimizes the average waiting time and turnaround time when burst times are known in advance.
+    - Ideal for scenarios where job lengths are predictable.
+  - **Disadvantages**:
+    - Can lead to starvation, where processes with longer burst times might not get executed.
+    - Non-preemptive nature makes it unsuitable for real-time systems.
+  
+- **Hybrid RR + SJF**
+  - **Advantages**:
+    - Combines the fairness of Round Robin with the efficiency of Shortest Job First.
+    - Addresses starvation by initially giving each process a time slice and then optimizing the execution order.
+  - **Disadvantages**:
+    - Complexity is higher than using RR or SJF alone, as both algorithms must be executed sequentially.
+    - May not always provide the best performance if the time quantum and process burst times are not well-tuned.
+
+---
+
+#### **3. Time Complexity Analysis**
+
+- **Round Robin (RR)**
+  - The time complexity of Round Robin scheduling is **O(n)**, where **n** is the number of processes. This is because each process is executed in a cyclic manner, and the algorithm iterates over all processes at least once per time quantum.
+
+- **Shortest Job First (SJF)**
+  - Sorting the processes based on burst time takes **O(n log n)** time. Once sorted, the scheduling itself has **O(n)** complexity. Thus, the overall time complexity of SJF is **O(n log n)**.
+
+- **Hybrid RR + SJF**
+  - First, Round Robin scheduling runs in **O(n)** time for initialization and process handling.
+  - Then, SJF requires sorting the processes, resulting in a complexity of **O(n log n)**.
+  - Therefore, the total complexity of the hybrid approach is **O(n log n)**, dominated by the sorting step in SJF.
+
+---
+
+#### **4. Limitations of the Hybrid Approach**
+
+- **Overhead**: The hybrid approach adds an extra layer of complexity by combining two different algorithms. In scenarios where processes are homogeneous (i.e., similar burst times), this may introduce unnecessary overhead.
+  
+- **Non-preemptive SJF**: Although the hybrid approach reduces starvation compared to pure SJF, it still relies on SJF’s non-preemptive nature, which can cause delays in processing longer jobs.
+
+- **Fixed Time Quantum**: The Round Robin component's performance heavily depends on the selection of the time quantum. A small quantum could result in frequent context switching, while a large quantum could behave like FCFS (First-Come, First-Served).
+
+---
+
+#### **5. Potential Improvements**
+
+- **Dynamic Time Quantum**: Instead of using a fixed time quantum for Round Robin, implementing a dynamic approach that adjusts based on the remaining burst time of each process or the system load could improve efficiency.
+  
+- **Preemptive SJF**: Introducing a preemptive version of SJF (i.e., Shortest Remaining Time First) could further optimize the hybrid approach and reduce waiting times, especially in dynamic systems with frequently arriving processes.
+
+- **Priority Scheduling**: Combining priority-based scheduling with RR and SJF could be useful for processes that need to be given higher priority over others. This would allow for more flexible and adaptable scheduling in real-time applications.
+
+---
+
+#### **6. Conclusion**
+
+The hybrid **RR + SJF** scheduling algorithm provides a balanced approach, offering both fairness and improved turnaround time by initially using RR and then optimizing with SJF. Although it performs better than RR and SJF individually, it has limitations in terms of complexity and the risk of non-preemptive delays. Further optimizations, such as dynamic time quantum and preemptive SJF, could improve its overall efficiency in practical applications.
+
+---
+
+This report serves as a high-level performance analysis and provides insights into how the hybrid CPU scheduling algorithm behaves in comparison to individual approaches, as well as potential areas for improvement.
+
+--- 
+
+This template gives you a good starting point, and you can adjust the details depending on your observations and the specific results you obtained from running your scheduling algorithms.
